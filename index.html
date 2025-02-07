@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 聊天室</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat { width: 500px; height: 400px; overflow-y: scroll; border: 1px solid black; padding: 10px; }
+        #input { width: 400px; }
+    </style>
+</head>
+<body>
+    <h2>大型語言模型聊天室</h2>
+    <div id="chat"></div>
+    <input type="text" id="input" placeholder="輸入文字">
+    <button onclick="sendMessage()">送出</button>
+
+    <script>
+        let chatBox = document.getElementById("chat");
+        let ws = new WebSocket("ws://localhost:8000/ws");
+
+        ws.onmessage = function(event) {
+            let message = document.createElement("div");
+            message.innerText = "模型：" + event.data;
+            chatBox.appendChild(message);
+        };
+
+        function sendMessage() {
+            let input = document.getElementById("input");
+            let message = document.createElement("div");
+            message.innerText = "你：" + input.value;
+            chatBox.appendChild(message);
+            ws.send(input.value);
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
