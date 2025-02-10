@@ -1,2 +1,6 @@
 # ollama install
 curl -fsSL https://ollama.com/install.sh | sh
+# ollama start
+ollama serve
+# ollama pull model
+ollama pull deepseek-r1:32b
